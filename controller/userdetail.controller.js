@@ -1,5 +1,6 @@
 const db = require("../config/config");
 const Userdetail = db.userdetails;
+const sequelize=db.sequelize;
 
 const addUserdetailcontroller = async (req, res) => {
   try {
@@ -124,7 +125,29 @@ const queryuserInserHandler= async(req,res)=>{
 };
 const queryuserHandler= async(req,res)=>{
   //only get in firstname and lastName field and all other field will not return
- const result = await Userdetail.findAll({ attributes: ['firstName','lastName'] }); 
+ const result = await Userdetail.findAll({ 
+  attributes: ['id','firstName',
+               'lastName',
+               //this function check  total no of id in table and return as id:no
+               //note : this fucntion only return one value
+               [sequelize.fn('COUNT', sequelize.col('id')), 'count'],
+              ] }); 
+  //if we want change table name in response 
+   //firsName=>first_name
+  //const result = await Userdetail.findAll({ attributes: [['firstName','first_name'],'lastName'] }); 
+  res.status(200).json(result);
+};
+const queryuserInserHandlerSecond=async(req,res)=>{
+  // brfore funtion we saw only get in firstname and lastName field and all other field will not return
+  //we can do it by include fucntion for extra field
+ const result = await Userdetail.findAll({ 
+  attributes: {
+    //this function exclude last name
+    //note : this fucntion only return one value
+    exclude: ['lastName'],
+    //this function include any thing in response
+       include:[ [sequelize.fn('COUNT', sequelize.col('id')), 'count']]
+  } }); 
   //if we want change table name in response 
    //firsName=>first_name
   //const result = await Userdetail.findAll({ attributes: [['firstName','first_name'],'lastName'] }); 
@@ -164,4 +187,5 @@ module.exports = { addUserdetailcontroller,
    deletByIdHandler ,
    updateUserbyId,
   queryuserInserHandler,
-  queryuserHandler};
+  queryuserHandler,
+  queryuserInserHandlerSecond};

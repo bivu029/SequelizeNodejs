@@ -1,4 +1,4 @@
-const { Sequelize,DataTypes,Model } = require('sequelize');
+const { Sequelize,DataTypes,Model,Op  } = require('sequelize');
 const usermodel= require('../models/user.model');
 const contactModel=require('../models/contact.model');
 
@@ -18,7 +18,7 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
  const  db={};
  db.Sequelize=Sequelize;
  db.sequelize=sequelize
- 
+ db.Op=Op;
   //sync database 
   //since we import it as function we can use parameter like this and then assign it in a db obj map 
   //because we want to access it from index.js

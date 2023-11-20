@@ -9,11 +9,26 @@ firstName: {
   type: DataTypes.STRING,
  // allowNull: false,
  // defaultValue:"bkpk"
+ //use getter for extra functionality like uppercase
+ get() {
+  const rawValue = this.getDataValue('firstName');
+  return rawValue ? rawValue.toUpperCase() : null;
+}
   
 },
 lastName: {
   type: DataTypes.STRING
   // allowNull defaults to true
+},
+//this virtual not store in data base but proccess in real time and show in response
+fullName: {
+  type: DataTypes.VIRTUAL,
+  get() {
+    return `${this.firstName} ${this.lastName}`;
+  },
+  set(value) {
+    throw new Error('Do not try to set the `fullName` value!');
+  }
 }
 }, {
 // Other model options go here

@@ -19,7 +19,9 @@ app.delete('/:id',userdetailcontroller.deletByIdHandler);
 app.patch('/:id',userdetailcontroller.updateUserbyId);
 app.post('/query' ,userdetailcontroller.queryuserInserHandler );
 app.get('/querybyname' ,userdetailcontroller.queryuserHandler );
+app.get('/querybyname2' ,userdetailcontroller.queryuserInserHandlerSecond );
 
+// app.get('/getset' ,userdetailcontroller.queryuserHandler );
 //this function will create table if not exist
 // Userdetail.sync();
 //this function will create table if not exist and delet previous same name table
