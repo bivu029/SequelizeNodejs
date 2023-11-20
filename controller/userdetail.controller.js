@@ -176,10 +176,21 @@ const assoCreatHandler = async (req, res) => {
 
   const data = await Userdetail.create(userdetail);
   if (data && data.id) {
-    address["user_id"] = data.id
-    console.log(address);
-    await Contact.create(address);
-    res.status(200).send("data successfully iserted");
+    console.log(Array.isArray(address));
+    if (Array.isArray(address)) {
+      address.forEach(element => {
+        element["user_id"] = data.id
+        
+      });
+      await Contact.bulkCreate(address);
+      res.status(200).send("data successfully iserted");
+      
+    } else {
+      address["user_id"]=data.id
+      await Contact.create(address);
+      res.status(200).send("data successfully iserted");
+    }
+   
   }
 };
 

@@ -39,6 +39,6 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
   },
   ); // A BelongsTo B
   //this function sync all database and recrete it
-  db.sequelize.sync({force:false});
+  db.sequelize.sync({force:true});
 
   module.exports= db;
