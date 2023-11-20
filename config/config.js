@@ -26,6 +26,16 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
  // db.userdetails=require('../models/user.model')(sequelize,DataTypes,Model)
   db.userdetails= usermodel(sequelize,DataTypes,Model);
   db.contact= contactModel(sequelize,DataTypes);
+  //create relation between two table 
+  db.userdetails.hasOne(db.contact, 
+    {
+    foreignKey: 'user_id'
+  }
+  ); // A HasOne B
+  db.contact.belongsTo( db.userdetails, {
+    foreignKey: 'user_id'
+  }
+  ); // A BelongsTo B
   //this function sync all database and recrete it
   db.sequelize.sync({force:false});
 

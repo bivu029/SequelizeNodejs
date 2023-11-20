@@ -7,13 +7,16 @@ const contactModel= (sequelize,DataTypes)=>{
         },
         current_address:{
             type:DataTypes.STRING
-        }
+        },
+        user_id:{
+            type:DataTypes.INTEGER
+        },
     },{
         // Other model options go here
       tableName:'contact',
-      // timestamps:false,
-       createdAt:false,
-       updatedAt:'updateTime'
+       timestamps:false,
+    //    createdAt:false,
+    //    updatedAt:'updateTime'
     
     });
     //console.log(Contact === sequelize.models.contact);

@@ -22,6 +22,9 @@ app.get('/querybyname' ,userdetailcontroller.queryuserHandler );
 app.get('/querybyname2' ,userdetailcontroller.queryuserInserHandlerSecond );
 app.get('/rawquery' ,userdetailcontroller.rawQueryHandler);
 app.get('/rawqueryuser' ,userdetailcontroller.rawqueruserHander);
+app.post('/asso',userdetailcontroller.assoCreatHandler);
+app.get('/asso',userdetailcontroller.assoGetHandler);
+app.get('/assoRev',userdetailcontroller.assoGetReHandler);
 
 
 // app.get('/getset' ,userdetailcontroller.queryuserHandler );
