@@ -176,7 +176,7 @@ const assoCreatHandler = async (req, res) => {
 
   const data = await Userdetail.create(userdetail);
   if (data && data.id) {
-    address["user_id"] = data.id;
+    address["user_id"] = data.id
     console.log(address);
     await Contact.create(address);
     res.status(200).send("data successfully iserted");
@@ -219,7 +219,7 @@ const assoGetReHandler = async (req, res) => {
     include: [
       {
         model: Userdetail,
-        as:"userDetails",
+        as:"userDetails", //just like in config.js file we need to write here 
         attributes: {
           exclude:["fullName"],
         },
@@ -236,6 +236,31 @@ const assoGetReHandler = async (req, res) => {
   res.status(200).send(data);
 };
 ///////////////one to many//////////////////
+const assoGetManyHandler = async (req, res) => {
+  const data = await Userdetail.findAll({
+    attributes: {
+      exclude: ["fullName"],
+    },
+    //we can also get data  from contact table and search query
+    include: [
+      {
+        model: Contact,
+        attributes: {
+          exclude: ["UserdetailModelId", "user_id"],
+        },
+        // where:{
+        //   current_address:"abc"
+        // }
+      },
+    ],
+    //u can also use where
+    // where:{
+    //   id:2
+    // }
+  });
+  res.status(200).send(data);
+};
+
 
 const isUserexist = async (firstName) => {
   var istrue = false;
@@ -276,5 +301,6 @@ module.exports = {
   rawqueruserHander,
   assoCreatHandler,
   assoGetHandler,
-  assoGetReHandler
+  assoGetReHandler,
+  assoGetManyHandler
 };

@@ -27,8 +27,8 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
   db.userdetails= usermodel(sequelize,DataTypes,Model);
   db.contact= contactModel(sequelize,DataTypes);
   //create relation between two table  
-  //this mean that each user can have one contact details 
-  db.userdetails.hasOne(db.contact, 
+  //this mean that each user can have many contact details 
+  db.userdetails.hasMany(db.contact, 
     {
     foreignKey: 'user_id'
   }

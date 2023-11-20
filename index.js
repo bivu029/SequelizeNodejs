@@ -25,6 +25,7 @@ app.get('/rawqueryuser' ,userdetailcontroller.rawqueruserHander);
 app.post('/asso',userdetailcontroller.assoCreatHandler);
 app.get('/asso',userdetailcontroller.assoGetHandler);
 app.get('/assoRev',userdetailcontroller.assoGetReHandler);
+app.get('/assoMany',userdetailcontroller.assoGetManyHandler);
 
 
 // app.get('/getset' ,userdetailcontroller.queryuserHandler );
