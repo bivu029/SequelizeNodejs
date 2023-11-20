@@ -219,6 +219,7 @@ const assoGetReHandler = async (req, res) => {
     include: [
       {
         model: Userdetail,
+        as:"userDetails",
         attributes: {
           exclude:["fullName"],
         },
