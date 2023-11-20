@@ -20,6 +20,9 @@ app.patch('/:id',userdetailcontroller.updateUserbyId);
 app.post('/query' ,userdetailcontroller.queryuserInserHandler );
 app.get('/querybyname' ,userdetailcontroller.queryuserHandler );
 app.get('/querybyname2' ,userdetailcontroller.queryuserInserHandlerSecond );
+app.get('/rawquery' ,userdetailcontroller.rawQueryHandler);
+app.get('/rawqueryuser' ,userdetailcontroller.rawqueruserHander);
+
 
 // app.get('/getset' ,userdetailcontroller.queryuserHandler );
 //this function will create table if not exist

@@ -1,6 +1,7 @@
 const db = require("../config/config");
 const Userdetail = db.userdetails;
 const sequelize=db.sequelize;
+const  QueryTypes =db.QueryTypes;
 
 const addUserdetailcontroller = async (req, res) => {
   try {
@@ -155,6 +156,27 @@ const queryuserInserHandlerSecond=async(req,res)=>{
 };
 
 
+const rawQueryHandler= async(req,res)=>{
+  const result= await sequelize.query("SELECT * FROM `Userdetail`",
+   { type: QueryTypes.SELECT,
+    //if you want output as model in userdetail controller 
+    //write this 
+    model: Userdetail,
+    mapToModel: true // pass true here if you have any mapped fields
+     },);
+  res.status(200).json(result);
+};
+
+const rawqueruserHander=async(req,res)=>{
+  const result= await sequelize.query("SELECT * FROM Userdetail where id =:id",
+  {
+    replacements: { id: '13' },
+    type: QueryTypes.SELECT
+  },);
+  res.status(200).json(result);
+};
+
+
 const isUserexist = async (firstName) => {
 var  istrue = false;
   const data = await Userdetail.findOne({
@@ -188,4 +210,6 @@ module.exports = { addUserdetailcontroller,
    updateUserbyId,
   queryuserInserHandler,
   queryuserHandler,
-  queryuserInserHandlerSecond};
+  queryuserInserHandlerSecond,
+  rawQueryHandler,
+  rawqueruserHander};
