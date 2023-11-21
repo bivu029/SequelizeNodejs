@@ -8,7 +8,7 @@ const contactModel= (sequelize,DataTypes)=>{
         current_address:{
             type:DataTypes.STRING
         },
-        user_id:{
+        user_id:{   //we dont need it when using many to many
             type:DataTypes.INTEGER
         },
     },{

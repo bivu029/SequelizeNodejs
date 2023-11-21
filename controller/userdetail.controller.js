@@ -1,6 +1,8 @@
 const db = require("../config/config");
 const Userdetail = db.userdetails;
 const Contact = db.contact;
+const Books=db.book;
+const bookanduser=db.Book_user;
 const sequelize = db.sequelize;
 const QueryTypes = db.QueryTypes;
 
@@ -172,7 +174,8 @@ const rawqueruserHander = async (req, res) => {
 ////one to one
 //create two  table link two table
 const assoCreatHandler = async (req, res) => {
-  const { userdetail, address } = req.body;
+ try {
+  const { userdetail, address ,books} = req.body;
 
   const data = await Userdetail.create(userdetail);
   if (data && data.id) {
@@ -183,15 +186,40 @@ const assoCreatHandler = async (req, res) => {
         
       });
       await Contact.bulkCreate(address);
-      res.status(200).send("data successfully iserted");
+      console.log("address successfully iserted");
+     // res.status(200).send("");
       
     } else {
       address["user_id"]=data.id
       await Contact.create(address);
-      res.status(200).send("data successfully iserted");
+      console.log("address successfully iserted");
+     // res.status(200).send("address successfully iserted");
     }
+    if (Array.isArray(books)) {
+      await Books.bulkCreate(books);
+      console.log("books successfully iserted");
+      
+    } else {
+      
+      const result= await Books.create(books);
+
+       const bookId=result.id;
+       const UserdetailModelId=data.id;
+      await bookanduser.create({"bookId": bookId,"UserdetailModelId":UserdetailModelId});
+
+      console.log("books successfully iserted");
+      
+    }
+    res.status(200).send("data successfully iserted");
    
+  }else{
+    res.status(404).send("error");
   }
+ 
+  
+ } catch (error) {
+  console.log(error);
+ }
 };
 
 //get data from two table
@@ -271,6 +299,84 @@ const assoGetManyHandler = async (req, res) => {
   });
   res.status(200).send(data);
 };
+///many to many
+const assoGetManytomanyHandler = async (req, res) => {
+  const data = await Userdetail.findAll({
+    attributes: {
+      exclude: ["fullName"],
+    },
+    //we can also get data  from contact table and search query
+    include: [
+      {
+        model: Contact,
+        attributes: {
+         exclude: ["UserdetailModelId", "user_id"],
+        },
+        // where:{
+        //   current_address:"abc"
+        // }
+      },
+      {
+        model:Books,
+        attributes:{
+        exclude:[]
+       },
+       through: {
+        attributes: []
+        }
+      }
+    ],
+    //u can also use where
+    // where:{
+    //   id:2
+    // }
+  });
+  res.status(200).send(data);
+};
+//reverse by book
+//reverse order
+const assoGetReManytoManyHandler = async (req, res) => {
+  const data = await Books.findAll({
+    attributes:{
+      exclude:[]
+     },
+    
+    //we can also get data  from contact table and search query
+    include: [
+      {
+        model: Userdetail,
+         as:"userDetails", //just like in config.js file we need to write here 
+        attributes: {
+          exclude:["fullName"],
+          
+         
+        },
+        include:[
+          {
+            model: Contact,
+            attributes: {
+             exclude: ["UserdetailModelId", "user_id"],
+            },
+          }
+        ],
+        
+        through: {
+          attributes: []
+          },
+        // where:{
+        //   current_address:"abc"
+        // }
+      },
+     
+      
+    ],
+    //u can also use where
+    // where:{
+    //   id:2
+    // }
+  });
+  res.status(200).send(data);
+};
 
 
 const isUserexist = async (firstName) => {
@@ -313,5 +419,7 @@ module.exports = {
   assoCreatHandler,
   assoGetHandler,
   assoGetReHandler,
-  assoGetManyHandler
+  assoGetManyHandler,
+  assoGetManytomanyHandler,
+  assoGetReManytoManyHandler
 };

@@ -1,6 +1,8 @@
 const { Sequelize,DataTypes,Model,Op , QueryTypes  } = require('sequelize');
 const usermodel= require('../models/user.model');
 const contactModel=require('../models/contact.model');
+const bookModel= require('../models/books.model');
+const Book_user= require('../models/bookandUser')
 
 const sequelize = new Sequelize('nodetut2', 'root', 'root', {
     host: 'localhost',
@@ -26,6 +28,8 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
  // db.userdetails=require('../models/user.model')(sequelize,DataTypes,Model)
   db.userdetails= usermodel(sequelize,DataTypes,Model);
   db.contact= contactModel(sequelize,DataTypes);
+  db.book=bookModel(sequelize,DataTypes);
+  db.Book_user=Book_user(sequelize,DataTypes,db.userdetails,db.contact);
   //create relation between two table  
   //this mean that each user can have many contact details 
   db.userdetails.hasMany(db.contact, 
@@ -38,7 +42,11 @@ const sequelize = new Sequelize('nodetut2', 'root', 'root', {
     as:"userDetails"  //we want it as show in json
   },
   ); // A BelongsTo B
+  ///many to many
+  db.book.belongsToMany(db.userdetails, { through: db.Book_user , as:"userDetails"});
+  db.userdetails.belongsToMany(db.book, { through: db.Book_user });
   //this function sync all database and recrete it
-  db.sequelize.sync({force:true});
+  db.sequelize.sync({force:false
+  });
 
   module.exports= db;
