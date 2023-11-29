@@ -1,4 +1,4 @@
-
+const bcrypt = require('bcrypt');
 const usermodel= (sequelize,DataTypes,Model)=>{
   //ist way
 class UserdetailModel extends Model {}
@@ -29,12 +29,24 @@ fullName: {
   set(value) {
     throw new Error('Do not try to set the `fullName` value!');
   }
+},
+password: {
+  type: DataTypes.STRING,
+  set(value) {
+    // Storing passwords in plaintext in the database is terrible.
+    // Hashing the value with an appropriate cryptographic hash function is better.
+    const hashedPassword = bcrypt.hashSync(value, 10);
+    this.setDataValue('password', hashedPassword);
+  }
 }
 }, {
 // Other model options go here
 sequelize, // We need to pass the connection instance
 //   modelName: 'Userdetail234' // We need to choose the model name
-tableName:'userdetail'
+tableName:'userdetail',
+timestamps:false,
+paranoid:true,
+deletedAt: 'destroyTime'
 });
 return UserdetailModel;
 }

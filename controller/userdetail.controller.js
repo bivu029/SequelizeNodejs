@@ -196,8 +196,13 @@ const assoCreatHandler = async (req, res) => {
      // res.status(200).send("address successfully iserted");
     }
     if (Array.isArray(books)) {
-      await Books.bulkCreate(books);
+      const book= await Books.bulkCreate(books);
       console.log("books successfully iserted");
+     await book.forEach(element => {
+      console.log(element.id);
+       bookanduser.create({"bookId": element.id,"UserdetailModelId":data.id})
+        
+      })
       
     } else {
       
@@ -354,6 +359,7 @@ const assoGetReManytoManyHandler = async (req, res) => {
         include:[
           {
             model: Contact,
+           
             attributes: {
              exclude: ["UserdetailModelId", "user_id"],
             },
@@ -377,6 +383,8 @@ const assoGetReManytoManyHandler = async (req, res) => {
   });
   res.status(200).send(data);
 };
+
+
 
 
 const isUserexist = async (firstName) => {

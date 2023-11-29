@@ -3,6 +3,7 @@ const app = express()
 require('./config/config')
 var bodyParser = require('body-parser')
 const userdetailcontroller= require('./controller/userdetail.controller');
+const employeeController= require('./controller/employee')
 
 
 
@@ -28,6 +29,14 @@ app.get('/assoRev',userdetailcontroller.assoGetReHandler);
 app.get('/assoMany',userdetailcontroller.assoGetManyHandler);
 app.get('/assoManytoMany',userdetailcontroller.assoGetManytomanyHandler);
 app.get('/assoRevManytoMany',userdetailcontroller.assoGetReManytoManyHandler);
+app.post('/emp',employeeController.emplpyeecreateHandler);
+app.get('/emp',employeeController.emplpyeefindHandler);
+app.purge('/emp',employeeController.emplpyeeDeletHandler);
+app.post('/empres',employeeController.emplpyeRestoreHandler);
+app.post('/empcar',employeeController.lazyLoding);
+app.get('/empcar',employeeController.getlazyLoding);
+app.get('/empeagr',employeeController.geteagrLoding);
+app.post('/empasso',employeeController.createAsso);
 
 
 // app.get('/getset' ,userdetailcontroller.queryuserHandler );
@@ -37,7 +46,7 @@ app.get('/assoRevManytoMany',userdetailcontroller.assoGetReManytoManyHandler);
 //  Userdetail.sync({ force: true });
 //  Userdetail2.sync({force:true});
  //Userdetail.drop();
-console.log("The table for the User model was just (re)created!");
+//console.log("The table for the User model was just (re)created!");
 
 
 app.listen(port , ()=> console.log('> Server is up and running on port : ' + port))
